@@ -72,3 +72,11 @@ Catatan: Transaksi pembelian/refund saat ini tidak menyentuh database; hanya sta
 ## Lisensi
 
 Proyek untuk keperluan akademik. Silakan gunakan dan modifikasi sesuai kebutuhan pembelajaran.
+
+## Catatan Kepada Pak Krisna:
+
+Saya ingin menyampaikan permohonan maaf kepada Bapak Krisna karena pada saat pengumpulan tugas UAS di Edlink, saya mengunggah file dalam format PDF, padahal seharusnya file yang dikumpulkan berupa file .txt.
+
+Hal ini terjadi karena saat membuat file .txt di Mac menggunakan aplikasi TextEdit, saat disimpan file tersebut secara otomatis menjadi format .rtf, yang ternyata tidak didukung oleh Edlink. Saya telah mencoba mencari solusi dan menggunakan bantuan AI, namun tidak berhasil, sehingga saya memutuskan untuk mengunggah file PDF agar tugas tetap dapat terkumpul tepat waktu.
+
+Sebagai bentuk permohonan maaf dan untuk melengkapi tugas sesuai ketentuan, saya telah menyediakan file .txt di README GitHub beserta video presentasi di YouTube.
