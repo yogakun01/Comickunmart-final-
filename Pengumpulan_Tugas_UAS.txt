@@ -1,9 +1,9 @@
 Pengumpulan Tugas UAS
 ======================
 
-Nama        : <isi nama>
-NIM         : <isi NIM>
-Mata Kuliah : <isi mata kuliah>
+Nama        : <I Made Sedana Yoga>
+NIM         : <2301020063>
+Mata Kuliah : <Pemrograman Mobile>
 Judul       : ComicKunMart (Aplikasi Komik berbasis Expo)
 
 Deskripsi Singkat:
@@ -12,10 +12,10 @@ Deskripsi Singkat:
 - Mendukung deep linking: comickunmart:// untuk membuka halaman spesifik.
 
 Link Video Demo:
-- https://<isi-link-video-demo>
+- https://youtu.be/Qa979Ms4eyg
 
 Source Code / GitHub Link:
-- https://github.com/<username>/<repo>
+- https://github.com/yogakun01/Comickunmart-final-.git
 
 Cara Menjalankan (ringkas):
 1) npm install
