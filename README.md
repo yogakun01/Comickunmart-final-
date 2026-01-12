@@ -1,50 +1,74 @@
-# Welcome to your Expo app 👋
+# ComicKunMart
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplikasi komik berbasis Expo (React Native) dengan fitur baca komik, manajemen chapter, dan deep linking. Proyek ini mendukung dua peran: Creator (pembuat komik) dan User (pembaca umum).
 
-## Get started
+## Ringkasan Fitur
+
+- Manajemen komik dan chapter (buat, edit, hapus untuk Creator)
+- Baca chapter untuk semua pengguna
+- Logika beli/refund untuk User (tanpa login, status tersimpan lokal)
+- Deep linking dengan skema `comickunmart://` untuk membuka halaman tertentu langsung dari URL
+- UI responsif dengan tema gelap/terang
+
+## Peran dan Aturan Akses
+
+- Creator
+  - Selalu melihat tombol `Baca` pada semua chapter miliknya
+  - Tidak melihat tombol `Beli` atau `Refund`
+  - Dapat edit/hapus komik dan chapter
+- User (tanpa login)
+  - Dapat membeli chapter berbayar (status pembelian disimpan lokal via AsyncStorage)
+  - Dapat refund untuk mengembalikan status pembelian
+  - Dapat membaca chapter gratis dan chapter berbayar yang sudah ditandai dibeli
+
+Catatan: Transaksi pembelian/refund saat ini tidak menyentuh database; hanya status lokal untuk keperluan demo.
+
+## Deep Linking
+
+- Skema: `comickunmart://`
+- Contoh link:
+  - `comickunmart://home`
+  - `comickunmart://comics/<comicId>`
+  - `comickunmart://comics/<comicId>/read/<chapterId>`
+- Testing cepat:
+  - iOS: `xcrun simctl openurl booted comickunmart://comics/123`
+  - Android: `adb shell am start -W -a android.intent.action.VIEW -d "comickunmart://comics/123"`
+- Dokumentasi lengkap: lihat `DEEP_LINKING_GUIDE.md` dan `DEEP_LINK_README.md`
+
+## Instalasi & Menjalankan
 
 1. Install dependencies
-
    ```bash
    npm install
    ```
 
-2. Start the app
-
+2. Jalankan aplikasi
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+3. Buka di emulator/simulator atau Expo Go sesuai kebutuhan.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Konfigurasi Lingkungan
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Konfigurasi Expo dan Supabase publik tersimpan di `app.json` melalui `EXPO_PUBLIC_*`
+- File rahasia dan lokal diabaikan melalui `.gitignore` (mis. `.env`, `.expo/`, `node_modules/`)
+- Jika perlu, buat `.env.example` untuk dokumentasi variabel lingkungan (opsional)
 
-## Get a fresh project
+## Struktur Proyek Singkat
 
-When you're ready, run:
+- `app/` — routes dan layar aplikasi (expo-router)
+- `components/` — komponen UI
+- `services/` — service layer (komik, chapter, transaksi, dll.)
+- `store/` — state management menggunakan store terpisah
+- `utils/` — utilitas (deep linking, storage, dll.)
 
-```bash
-npm run reset-project
-```
+## Catatan Teknis
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- Pembelian dan refund tidak melakukan transaksi nyata; status disimpan di local storage per komik
+- Creator diidentifikasi via `profile.id === comic.creator_id`
+- Tombol beli dan refund tersembunyi untuk Creator; hanya tombol baca yang tampil
 
-## Learn more
+## Lisensi
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Proyek untuk keperluan akademik. Silakan gunakan dan modifikasi sesuai kebutuhan pembelajaran.

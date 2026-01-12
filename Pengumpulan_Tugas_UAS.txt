@@ -1,0 +1,31 @@
+Pengumpulan Tugas UAS
+======================
+
+Nama        : <isi nama>
+NIM         : <isi NIM>
+Mata Kuliah : <isi mata kuliah>
+Judul       : ComicKunMart (Aplikasi Komik berbasis Expo)
+
+Deskripsi Singkat:
+- Aplikasi komik dengan peran Creator dan User.
+- Baca chapter, kelola komik/chapter (Creator), beli/refund (User, status lokal).
+- Mendukung deep linking: comickunmart:// untuk membuka halaman spesifik.
+
+Link Video Demo:
+- https://<isi-link-video-demo>
+
+Source Code / GitHub Link:
+- https://github.com/<username>/<repo>
+
+Cara Menjalankan (ringkas):
+1) npm install
+2) npx expo start
+
+Catatan Teknis:
+- Pembelian/refund tidak melakukan transaksi nyata; status disimpan lokal (AsyncStorage).
+- Creator hanya melihat tombol Baca (tanpa Beli/Refund).
+- Deep link aktif (contoh: comickunmart://comics/123).
+
+Dokumentasi Tambahan:
+- README.md (ringkasan proyek)
+- DEEP_LINKING_GUIDE.md & DEEP_LINK_README.md (panduan deep linking)
