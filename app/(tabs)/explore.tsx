@@ -1,112 +1,182 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+  useColorScheme,
+  ScrollView,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import { comicService } from '@/services/comic.service';
+import { ComicCard } from '@/components/ComicCard';
+import { Colors, Fonts, Sizes } from '@/constants/theme';
+import { FontAwesome } from '@expo/vector-icons';
+import { Comic } from '@/types/comic.type';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+export default function ExploreScreen() {
+  const router = useRouter();
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+  const colors = isDarkMode ? Colors.dark : Colors.light;
 
-export default function TabTwoScreen() {
+  const [keyword, setKeyword] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
+  const [comics, setComics] = useState<Comic[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const genres = ['Action', 'Romance', 'Comedy', 'Drama', 'Fantasy', 'Sci-Fi', 'Horror', 'Slice of Life', 'Isekai', 'Adventure'];
+
+  useEffect(() => {
+    const loadComics = async () => {
+      setLoading(true);
+      let comicList: Comic[] | null = [];
+      if (selectedGenre) {
+        comicList = await comicService.getComicsByGenre(selectedGenre);
+      } else if (keyword.trim()) {
+        comicList = await comicService.searchComics(keyword);
+      } else {
+        comicList = await comicService.getComics();
+      }
+      setComics(comicList ?? []);
+      setLoading(false);
+    };
+    loadComics();
+  }, [selectedGenre, keyword]);
+
+  const handleSearch = () => {
+    setSelectedGenre(null); // Reset genre filter when searching
+    // The useEffect hook will handle the search
+  };
+
+  const handleSelectGenre = (genre: string) => {
+    setKeyword(''); // Reset search keyword when selecting a genre
+    setSelectedGenre(genre === selectedGenre ? null : genre); // Toggle genre selection
+  };
+
+  const renderGenreChips = () => (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.genreContainer}>
+      {genres.map((genre) => (
+        <TouchableOpacity
+          key={genre}
+          style={[
+            styles.genreChip,
+            { backgroundColor: selectedGenre === genre ? colors.primary : colors.card },
+          ]}
+          onPress={() => handleSelectGenre(genre)}
+        >
+          <Text
+            style={[
+              styles.genreText,
+              { color: selectedGenre === genre ? '#fff' : colors.text },
+            ]}
+          >
+            {genre}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.header, { color: colors.text }]}>Jelajahi Dunia Komik</Text>
+      
+      <View style={styles.searchContainer}>
+        <FontAwesome name="search" size={20} color={colors.text} style={styles.searchIcon} />
+        <TextInput
+          placeholder="Cari judul komik..."
+          placeholderTextColor={colors.text}
+          value={keyword}
+          onChangeText={setKeyword}
+          onSubmitEditing={handleSearch}
+          style={[styles.input, { backgroundColor: colors.card, color: colors.text }]}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
+      </View>
+
+      {renderGenreChips()}
+
+      {loading ? (
+        <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 20 }} />
+      ) : (
+        <FlatList
+          data={comics}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <View style={styles.comicCardContainer}>
+              <ComicCard
+                id={item.id}
+                title={item.title}
+                cover={item.cover_url}
+                onPress={() => router.push(`/comics/${item.id}`)}
+              />
+            </View>
+          )}
+          ListEmptyComponent={<Text style={[styles.empty, { color: colors.text }]}>Tidak ada komik yang ditemukan.</Text>}
+          contentContainerStyle={styles.listContentContainer}
         />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    padding: Sizes.padding,
   },
-  titleContainer: {
+  header: {
+    fontSize: Fonts.title.fontSize,
+    fontWeight: Fonts.title.fontWeight,
+    marginBottom: Sizes.margin,
+  },
+  searchContainer: {
     flexDirection: 'row',
-    gap: 8,
+    alignItems: 'center',
+    marginBottom: Sizes.margin,
+  },
+  searchIcon: {
+    position: 'absolute',
+    left: 15,
+    zIndex: 1,
+  },
+  input: {
+    flex: 1,
+    height: 50,
+    borderRadius: Sizes.radius,
+    paddingLeft: 45,
+    paddingRight: 15,
+    fontSize: Fonts.body.fontSize,
+  },
+  genreContainer: {
+    marginBottom: Sizes.margin,
+     minHeight: 40,
+  },
+  genreChip: {
+    paddingHorizontal: Sizes.padding,
+    paddingVertical: Sizes.padding / 2,
+    borderRadius: 20,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: Colors.light.primary,
+  },
+  genreText: {
+    fontSize: Fonts.body.fontSize,
+  },
+  listContentContainer: {
+    paddingBottom: Sizes.padding * 2,
+  },
+  comicCardContainer: {
+    flex: 1 / 2,
+    padding: Sizes.margin / 4,
+  },
+  empty: {
+    textAlign: 'center',
+    marginTop: 100,
+    fontSize: Fonts.body.fontSize,
   },
 });

@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.madeyoga.ComicKunMart"
     },
     "android": {
       "adaptiveIcon": {
@@ -19,7 +20,22 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.madeyoga.ComicKunMart",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ],
+          "data": [
+            {
+              "scheme": "comickunmart"
+            }
+          ]
+        }
+      ]
     },
     "web": {
       "output": "static",
@@ -38,11 +54,20 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "EXPO_PUBLIC_SUPABASE_URL": "https://kaqnzeoefxvfvfpwveby.supabase.co",
+      "EXPO_PUBLIC_SUPABASE_KEY": "sb_publishable_uGpYrPRCtkbRIDSfnjwnkA_aHkdhjWn",
+      "eas": {
+        "projectId": "c7a54833-deda-4925-82bd-ea5d35823dbd"
+      }
     }
   }
 }

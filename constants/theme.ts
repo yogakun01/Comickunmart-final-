@@ -1,53 +1,65 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+import { TextStyle } from 'react-native';
 
-import { Platform } from 'react-native';
-
-const tintColorLight = '#0a7ea4';
+const tintColorLight = '#0A7EA4';
 const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: '#1A1A1A',
+    background: '#F8F9FA',
     tint: tintColorLight,
     icon: '#687076',
-    tabIconDefault: '#687076',
+    tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,
+    card: '#FFFFFF',
+    border: '#EAECEF',
+    primary: '#0A7EA4',
+    secondary: '#FF8C00',
+    success: '#28A745',
+    danger: '#DC3545',
+    warning: '#FFC107',
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: '#EAECEF',
+    background: '#1A1A1A',
     tint: tintColorDark,
     icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,
+    card: '#2C2C2C',
+    border: '#3A3A3A',
+    primary: '#0A7EA4',
+    secondary: '#FF8C00',
+    success: '#28A745',
+    danger: '#DC3545',
+    warning: '#FFC107',
   },
 };
 
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+type FontWeight = TextStyle['fontWeight'];
+
+export const Fonts = {
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold' as FontWeight,
   },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
+  subtitle: {
+    fontSize: 20,
+    fontWeight: '600' as FontWeight,
   },
-  web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+  body: {
+    fontSize: 16,
+    fontWeight: 'normal' as FontWeight,
   },
-});
+  caption: {
+    fontSize: 12,
+    fontWeight: '400' as FontWeight,
+  },
+};
+
+export const Sizes = {
+  padding: 16,
+  margin: 16,
+  radius: 12,
+  touchable: 44,
+};
